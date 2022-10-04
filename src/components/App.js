@@ -1,7 +1,8 @@
-import SearchBar from "./searchbar";
-import ImageGallery from "./imagegallery";
-import Modal from "./modal/Modal";
-import { Component } from "react";
+import SearchBar from './searchbar';
+import ImageGallery from './imagegallery';
+import Modal from './modal/Modal';
+import { Component } from 'react';
+import { Section } from './App.styled';
 
 class App extends Component {
   state = {
@@ -9,13 +10,13 @@ class App extends Component {
   }
   render() {
     return (
-      <div>
+      <Section>
         <SearchBar
           // onSearch={ }
         />
         <ImageGallery />
         <Modal />
-      </div>
+      </Section>
     );
   }
 };
