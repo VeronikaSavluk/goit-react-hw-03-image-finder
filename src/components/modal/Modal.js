@@ -1,12 +1,14 @@
-import { Component } from "react";
+import { Component } from 'react';
+import {LargeImage} from './Modal.styled'
 
 class Modal extends Component {
     state = {
 
     }
+
     render() {
         return (
-            <div></div>
+            <LargeImage></LargeImage>
         )
     }
 }
