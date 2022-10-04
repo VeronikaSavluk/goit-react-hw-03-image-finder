@@ -1,10 +1,14 @@
 import ImageGalleryItem from "components/imagegalleryitem/ImageGalleryItem";
-const ImageGallery = () => {
+import Button from "./button/Button";
+import { List } from './ImageGallery.styled';
+
+const ImageGallery = ({ props }) => {
     return (
-        <ul class="gallery">
-{ImageGalleryItem}
-        </ul>
+        <List>
+            <ImageGalleryItem />
+            <Button />
+        </List>
     )
-}
+};
 
 export default ImageGallery;
