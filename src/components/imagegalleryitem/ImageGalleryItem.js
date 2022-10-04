@@ -1,8 +1,10 @@
+import { Item, Image } from './ImageGalleryItem.styled';
+
 const ImageGalleryItem = () => {
-    return (
-    <li class="gallery-item">
-  <img src="" alt="" />
-</li>
-)
+  return (
+    <Item>
+      <Image src="" alt="" />
+    </Item>
+  )
 }
 export default ImageGalleryItem;
