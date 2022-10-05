@@ -1,12 +1,12 @@
 import ImageGalleryItem from "components/imagegalleryitem/ImageGalleryItem";
-import Button from "./button/Button";
+import Button from "../button/Button";
 import { List } from './ImageGallery.styled';
 
-const ImageGallery = ({ props }) => {
+const ImageGallery = ({ query }) => {
     return (
         <List>
-            <ImageGalleryItem />
-            <Button />
+            {{query} !== '' && <ImageGalleryItem />}
+            <Button text="Load more"/>
         </List>
     )
 };
