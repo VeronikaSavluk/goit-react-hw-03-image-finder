@@ -1,8 +1,8 @@
 import { Btn } from './Button.styled';
 
-const Button = () => {
+const Button = ({text}) => {
     return (
-    <Btn/>
+    <Btn>{text}</Btn>
 )
 }
 
