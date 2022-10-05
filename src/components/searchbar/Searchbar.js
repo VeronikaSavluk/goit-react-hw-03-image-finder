@@ -3,8 +3,9 @@ import { Header, SearchForm, Button, Label, Input } from './Searchbar.styled';
 
 class SearchBar extends Component{
   state = {
-
+    query: '',
   }
+
   render() {
     return (
     <Header>
