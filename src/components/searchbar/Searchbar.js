@@ -12,7 +12,6 @@ state = this.initialValues;
   hendleSubmit = (values, { resetForm }) => {
     const searchQuery = values.query.split(" ").join("+");
     if (searchQuery !== '') {
-      // values.query = searchQuery;
       this.props.onSubmit(searchQuery);
       resetForm();
     };
