@@ -17,20 +17,22 @@ class App extends Component {
     images: [],
     loading: false,
     page: 1,
-    disabled: 'false',
-  }
-
-  handleSearchForm = (query) => {
-    this.setState({query, images: [], page: 1 });
+    disabled: false,
+    showModal: false,
+    largeImage: null,
   }
 
   async componentDidUpdate(_, prevState) {
     const { query, page } = this.state;
     if (prevState.query !== query ||
       prevState.page !== page) {
-      this.setState({ loading: true });
+      this.setState({ loading: true,  disabled: false});
       try {
         const { data } = await axios.get(`?q=${query}&page=${page}&key=${process.env.REACT_APP_API_KEY}&image_type=photo&orientation=horizontal&per_page=${this.PER_PAGE}`);
+        const amountImages = data.hits.length;
+        if (amountImages < 12) {
+          this.setState({ disabled: true });
+        };
         if (prevState.query !== query) {
           return this.setState({ images: data.hits });
         } else {
@@ -44,24 +46,39 @@ class App extends Component {
     }
   }
 
+  handleSearchForm = (query) => {
+    this.setState({query, images: [], page: 1 });
+  }
+
   handlePage = () => {
     this.setState(prevState => ({
       page: prevState.page + 1,
     }));
+  }
+
+  toggleShowModal = () => {
+    this.setState(({showModal}) => ({ showModal: !showModal }));
+  }
+
+  handleLargeImage = (largeImageUrl) => {
+    this.setState({ largeImage: largeImageUrl, showModal: !this.showModal });
 }
 
   render() {
-    const { loading, images } = this.state;
-      return (
-      <Section>
-        <SearchBar onSubmit={this.handleSearchForm} />
-        <Gallery>
-        <ImageGallery images={images} />
-          {loading && <Loader />}
-          {!loading && images.length > 0 ? <Button onClick={this.handlePage} /> : null}
-        </Gallery>
-        <Modal />
-      </Section>
+    const { loading, images, disabled, showModal, largeImage } = this.state;
+
+    return (
+    <Section>
+      <SearchBar onSubmit={this.handleSearchForm} />
+      <Gallery>
+          <ImageGallery images={images} onSelect={this.handleLargeImage} />
+          {showModal && (<Modal onClose={this.toggleShowModal} >
+          <img src={largeImage} alt="" />
+        </Modal>)}
+        {loading && <Loader />}
+        {images.length > 0 && !loading && !disabled && <Button onClick={this.handlePage} />}
+      </Gallery>
+    </Section>
     );
   }
 };
