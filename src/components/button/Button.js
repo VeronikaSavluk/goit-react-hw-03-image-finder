@@ -1,4 +1,3 @@
-// import { Component } from 'react';
 import { Btn } from './Button.styled';
 
 const Button = ({onClick}) => {
