@@ -14,7 +14,5 @@ export const Backdrop = styled.div`
 `;
 
 export const Content = styled.div`
-  max-width: calc(100vw - 48px);
-  max-height: calc(100vh - 24px);
-  padding: 24px;
+  max-width: 800px;
 `;
