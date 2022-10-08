@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Component } from 'react';
 import { createPortal } from 'react-dom';
 import { Backdrop, Content} from './Modal.styled'
@@ -35,6 +36,12 @@ class Modal extends Component {
             modalRoot,
         );
     }
+}
+
+Modal.propTypes = {
+    handleKeydown: PropTypes.func,
+    handleBackdrop: PropTypes.func,
+    onClose: PropTypes.func,
 }
 
 export default Modal;

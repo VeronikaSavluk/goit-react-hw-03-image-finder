@@ -1,5 +1,7 @@
 import { Component } from 'react';
 import { Formik } from 'formik';
+import * as yup from 'yup';
+import PropTypes from 'prop-types';
 import { ImSearch } from 'react-icons/im';
 import { Header, SearchForm, Button, Label, Input } from './Searchbar.styled';
 
@@ -7,7 +9,9 @@ class SearchBar extends Component{
   initialValues = {
     query: '',
   }
-state = this.initialValues;
+  state = this.initialValues;
+
+  schema = yup.string().required()
 
   hendleSubmit = (values, { resetForm }) => {
     const searchQuery = values.query.split(" ").join("+");
@@ -17,10 +21,12 @@ state = this.initialValues;
     };
   }
   render() {
+    const {initialValues, schema, hendleSubmit} = this;
     return (
       <Header>
-        <Formik initialValues={this.initialValues}
-          onSubmit={this.hendleSubmit}
+        <Formik initialValues={initialValues}
+          validationSchema={schema}
+          onSubmit={hendleSubmit}
         >
           <SearchForm>
             <Button type="submit">
@@ -40,6 +46,10 @@ state = this.initialValues;
       </Header>
     )
   }
+}
+
+SearchBar.propTypes = {
+  handleSubmit: PropTypes.func,
 }
 
 export default SearchBar;
