@@ -1,18 +1,15 @@
 import { Component } from 'react';
-import axios from 'axios';
+import { ImSad } from "react-icons/im";
 import SearchBar from './searchbar';
 import Loader from './loader';
 import ImageGallery from './imagegallery';
 import Button from "./button";
 import Modal from './modal'
 import { Section, Gallery } from './App.styled';
-
-axios.defaults.baseURL = 'https://pixabay.com/api';
+import getImages from './api';
 
 class App extends Component {
-  PER_PAGE = 12;
-
-  state = {
+    state = {
     query: '',
     images: [],
     loading: false,
@@ -20,6 +17,7 @@ class App extends Component {
     disabled: false,
     showModal: false,
     largeImage: null,
+    error: null,
   }
 
   async componentDidUpdate(_, prevState) {
@@ -28,18 +26,17 @@ class App extends Component {
       prevState.page !== page) {
       this.setState({ loading: true,  disabled: false});
       try {
-        const { data } = await axios.get(`?q=${query}&page=${page}&key=${process.env.REACT_APP_API_KEY}&image_type=photo&orientation=horizontal&per_page=${this.PER_PAGE}`);
-        const amountImages = data.hits.length;
-        if (amountImages < 12) {
+        const newImages = await getImages(query, page);
+        if (newImages.length < 12) {
           this.setState({ disabled: true });
         };
         if (prevState.query !== query) {
-          return this.setState({ images: data.hits });
+          return this.setState({ images: newImages });
         } else {
-          return this.setState({ images: [...prevState.images, ...data.hits] });
+          return this.setState({ images: [...prevState.images, ...newImages] });
         };
       } catch (error) {
-          console.error(error);
+          this.setState({ error: 'Faild to load images and photos' });
       } finally {
        this.setState({ loading: false });
       }
@@ -65,18 +62,20 @@ class App extends Component {
 }
 
   render() {
-    const { loading, images, disabled, showModal, largeImage } = this.state;
+    const { loading, images, disabled, showModal, largeImage, error } = this.state;
+    const { handleSearchForm, handleLargeImage, toggleShowModal, handlePage } = this;
 
     return (
     <Section>
-      <SearchBar onSubmit={this.handleSearchForm} />
-      <Gallery>
-          <ImageGallery images={images} onSelect={this.handleLargeImage} />
-          {showModal && (<Modal onClose={this.toggleShowModal} >
+      <SearchBar onSubmit={handleSearchForm} />
+        <Gallery>
+          {error && <div><ImSad color="IndianRed" font-size="25px" /> <span>{error}</span></div>}
+          <ImageGallery images={images} onSelect={handleLargeImage} />
+          {showModal && (<Modal onClose={toggleShowModal} >
           <img src={largeImage} alt="" />
         </Modal>)}
         {loading && <Loader />}
-        {images.length > 0 && !loading && !disabled && <Button onClick={this.handlePage} />}
+        {images.length > 0 && !loading && !disabled && <Button onClick={handlePage} />}
       </Gallery>
     </Section>
     );
