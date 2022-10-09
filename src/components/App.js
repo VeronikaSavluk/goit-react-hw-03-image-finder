@@ -21,6 +21,7 @@ class App extends Component {
   }
 
   async componentDidUpdate(_, prevState) {
+    const {images} = this.state;
     const { query, page } = this.state;
     if (prevState.query !== query ||
       prevState.page !== page) {
@@ -30,11 +31,7 @@ class App extends Component {
         if (newImages.length < 12) {
           this.setState({ disabled: true });
         };
-        if (prevState.query !== query) {
-          return this.setState({ images: newImages });
-        } else {
-          return this.setState({ images: [...prevState.images, ...newImages] });
-        };
+          return this.setState({ images: [...images, ...newImages] });
       } catch (error) {
           this.setState({ error: 'Faild to load images and photos' });
       } finally {
